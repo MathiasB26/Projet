@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réparateur Téléphone Hauterives | iPhone & Android – Hauterives Connect</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icone.png" />
+
+  <!-- SEO meta -->
+  <meta name="description" content="Réparateur téléphone à Hauterives et dans la Drôme des Collines. Remplacement d’écran, batterie, vitre arrière et autres composants. Service mobile dans un rayon de 30 km."/>
+  <link rel="canonical" href="https://hauterives-connect.fr/telephone.html"/>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Réparation téléphone à Hauterives – iPhone & Android"/>
+  <meta property="og:description" content="Remplacement d’écran, batterie, vitre arrière. Service mobile 30 km autour d’Hauterives."/>
+  <meta property="og:image" content="https://hauterives-connect.fr/assets/og-phone.jpg"/>
+  <meta property="og:url" content="https://hauterives-connect.fr/telephone.html"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+
+  <!-- LocalBusiness + Avis (JSON‑LD) -->
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"LocalBusiness",
+    "name":"Hauterives Connect",
+    "image":"https://hauterives-connect.fr/logo.jpg",
+    "telephone":"+33649578017",
+    "address":{
+      "@type":"PostalAddress",
+      "addressLocality":"Hauterives",
+      "addressCountry":"FR"
+    },
+    "review":[{
+      "@type":"Review",
+      "reviewBody":"Travail de pro et très rapide !",
+      "reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}
+    }]
+  }</script>
+
+  <!-- Styles & libs -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <style>
+    :root{
+      --primary:#2563EB;/* Bleu Apple */
+      --secondary:#34C759;/* Vert Android */
+      --dark:#0F172A;/* Fond sombre */
+      --light:#F8FAFC;/* Texte clair */
+    }
+    body{background-color:var(--dark);color:var(--light);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;}
+    /* --- Background animé --- */
+    .animated-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(-45deg,#0F172A,#1E293B,#0F172A,#1E293B);background-size:400% 400%;animation:gradientFlow 20s ease infinite;}
+    @keyframes gradientFlow{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+    /* --- Cartes services & divers --- */
+    .service-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:15px;backdrop-filter:blur(12px);transition:.4s;padding:1rem;margin-bottom:1rem;height:auto;}
+    .service-card:hover{transform:translateY(-10px);box-shadow:0 15px 35px rgba(37,99,235,.15);}  
+    .price-tag{background:var(--primary);color:var(--light);padding:8px 20px;border-radius:20px;font-weight:600;}
+    #map{height:400px;border-radius:15px;overflow:hidden;margin-bottom:1rem;}
+    .quick-access{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;}
+    .quick-access a{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;text-align:center;color:var(--light);text-decoration:none;transition:.3s;}
+    .quick-access a:hover{background:var(--primary);transform:translateY(-5px);}  
+    .contact-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+    .contact-option{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:15px;padding:1.5rem;text-align:center;transition:.3s;}
+    .contact-option:hover{background:var(--primary);transform:translateY(-5px);}  
+    .service-image{border-radius:15px;overflow:hidden;max-width:100%;height:auto;margin-left:2rem;}
+    /* --- Avis --- */
+    #avis-container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;margin-top:30px;padding:10px;}
+    .avis{width:260px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;color:#fff;font-size:15px;text-align:center;backdrop-filter:blur(4px);box-shadow:0 3px 6px rgba(0,0,0,.25);transition:.2s;}
+    .avis:hover{transform:translateY(-4px);}  
+    .avis img{width:60px;height:60px;border-radius:50%;object-fit:cover;margin-bottom:10px;border:1px solid #fff;}
+    .avis strong{display:block;font-size:16px;margin-bottom:6px;}
+    .stars{margin-top:8px;font-size:16px;color:gold;}
+  </style>
+</head>
+<body>
+
+  <div class="animated-bg"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background:rgba(15,23,42,.95);">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#"><i class="fas fa-mobile-alt me-2"></i>Hauterives Connect</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="min-vh-100 d-flex align-items-center">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <span class="badge bg-primary mb-3">Technicien mobile à domicile – Intervention rapide autour d’Hauterives (30 km)
+
+</span>
+          <h1 class="display-3 fw-bold mb-4">Réparation de téléphones à Hauterives <br><span class="text-primary"> iPhone, Samsung, Android & plus</span> <span class="text-secondary"> </span></h1>
+          <p class="lead mb-5 opacity-75">Réparation rapide d’écran, batterie, vitre arrière et autres composants.</p>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="tel:+33649578017" class="btn btn-primary btn-lg px-4 py-3"><i class="fas fa-phone me-2"></i>06 49 57 80 17</a>
+            <a href="#contact" class="btn btn-outline-light btn-lg px-4 py-3"><i class="fas fa-map-marked-alt me-2"></i>Zone d’intervention</a>
+            <a href="index.html" class="btn btn-secondary btn-lg px-4 py-3"><i class="fas fa-laptop-code me-2"></i>Espace Informatique</a>
+          </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+          <img src="https://images.pexels.com/photos/719399/pexels-photo-719399.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Réparation smartphone à Hauterives" class="service-image"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- À propos -->
+  <section id="about" class="py-5">
+    <div class="container">
+      <div class="service-card p-4 p-lg-5">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h2 class="display-6 fw-bold mb-4">À propos de moi</h2>
+            <p class="opacity-75 mb-4">Je suis <strong>Mathias Brunet</strong>, informaticien auto‑entrepreneur basé à Hauterives, dans la Drôme. Passionné par les nouvelles technologies, j’offre des services complets pour répondre à tous vos besoins informatiques.</p>
+            <p class="opacity-75 mb-4">Mon expertise couvre la réparation d’ordinateurs et de téléphones, la gestion de réseaux informatiques, la vente de matériel informatique, ainsi que des formations adaptées à tous les niveaux. Mon objectif est de vous offrir des solutions <strong>rapides, efficaces et accessibles</strong>, avec un service de proximité et un suivi personnalisé.</p>
+            <p class="opacity-75 mb-4">J’interviens principalement dans un rayon de <strong>30 km autour de Hauterives</strong>, incluant des villes comme Châteauneuf‑de‑Galaure, Anneyron, Saint‑Uze, Peyrins et d’autres communes voisines.</p>
+            <p class="opacity-75 mb-4">Que ce soit à domicile ou à distance, je suis disponible pour vous accompagner dans toutes vos démarches informatiques et vous former aux outils numériques du quotidien.</p>
+            <a href="#contact" class="btn btn-primary btn-lg px-4 py-3"><i class="fas fa-envelope me-2"></i>Contactez‑moi</a>
+            <a href="index.html" class="btn btn-secondary btn-lg px-4 py-3"><i class="fas fa-laptop-code me-2"></i>Espace Informatique</a>
+          </div>
+          <div class="col-lg-4 d-none d-lg-block">
+            <img src="IMG_1344.jpg" alt="Mathias Brunet – Informaticien à Hauterives" class="service-image"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-5">
+    <div class="container">
+      <h2 class="text-center display-4 fw-bold mb-4">Nos Services</h2>
+      <!-- Accès rapide -->
+      <div class="quick-access mb-4">
+        <a href="#ecran"><i class="fas fa-mobile-screen fs-2 mb-2"></i><br>Écrans</a>
+        <a href="#batterie"><i class="fas fa-battery-full fs-2 mb-2"></i><br>Batteries</a>
+        <a href="#vitre"><i class="fas fa-shield-alt fs-2 mb-2"></i><br>Vitres Arrière</a>
+        <a href="#autres"><i class="fas fa-tools fs-2 mb-2"></i><br>Autres Réparations</a>
+      </div>
+      <!-- Grille de services -->
+      <div class="services-grid">
+        <div id="ecran" class="service-card">
+          <h3 class="mb-3">Écran iPhone & Android</h3>
+          <ul class="opacity-75 mb-4">
+            <li>✓ Écran origine ou compatible</li>
+            <li>✓ Remplacement en 45 min</li>
+            <li>✓ Garantie 6 mois</li>
+          </ul>
+          <div class="price-tag">À partir de 69 €</div>
+        </div>
+        <div id="batterie" class="service-card">
+          <h3 class="mb-3">Batterie</h3>
+          <ul class="opacity-75 mb-4">
+            <li>✓ iPhone & Android</li>
+            <li>✓ Capacité réelle garantie</li>
+            <li>✓ Diagnostic gratuit</li>
+          </ul>
+          <div class="price-tag">À partir de 55 €</div>
+        </div>
+        <div id="vitre" class="service-card">
+          <h3 class="mb-3">Vitre Arrière</h3>
+          <ul class="opacity-75 mb-4">
+            <li>✓ iPhone & Android</li>
+            <li>✓ Collage professionnel</li>
+            <li>✓ Maintien étanchéité</li>
+          </ul>
+          <div class="price-tag">À partir de 75 €</div>
+        </div>
+        <div id="autres" class="service-card">
+          <h3 class="mb-3">Autres Réparations</h3>
+          <ul class="opacity-75 mb-4">
+            <li>✓ Vibreur</li>
+            <li>✓ Haut‑parleur</li>
+            <li>✓ Microphone</li>
+            <li>✓ Capteurs (proximité, luminosité)</li>
+            <li>✓ Connecteur de charge</li>
+            <li>✓ Boutons (volume, power)</li>
+          </ul>
+          <div class="price-tag">Sur devis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avis -->
+  <div id="avis-container">
+    <div class="avis"><img src="https://lh3.googleusercontent.com/a/ACg8ocLQij0HQLed3MnxBQxxxV1jfMbI9giQIjVQdTo5ybBcu8aJX88=w72-h72-p-rp-mo-br100" alt="Photo de Mathis F."/>
+      <strong>Mathis F.</strong>Travail de pro et très rapide ! J’ai fait réparer l’écran de mon iPhone 15 Pro. Je recommande, tout s’est très bien passé
+      <div class="stars">★★★★★</div></div>
+    <div class="avis"><img src="https://lh3.googleusercontent.com/a/ACg8ocLQij0HQLed3MnxBQxxxV1jfMbI9giQIjVQdTo5ybBcu8aJX88=w72-h72-p-rp-mo-br100" alt="Photo de Marc L."/>
+      <strong>Marc L.</strong>Travail parfait (changement écran de mon iPhone)
+      <div class="stars">★★★★★</div></div>
+    <div class="avis"><img src="https://user-images.trustpilot.com/6824a673bf768b38b6fb85e6/73x73.png" alt="Photo de Nath."/>
+      <strong>Nath.</strong>Un service irréprochable ! Mon iPhone 13 est ressorti comme neuf. Le gérant est vraiment sympathique et très professionnel.
+      <div class="stars">★★★★★</div></div>
+  </div>
+
+  <!-- Contact & carte -->
+  <section id="contact" class="py-5">
+    <div class="container">
+      <div class="service-card p-4 p-lg-5">
+        <div class="row g-5">
+          <div class="col-md-6">
+            <h2 class="display-6 fw-bold mb-4">Zone d’Intervention</h2>
+            <p class="opacity-75 mb-3"><i class="fas fa-map-pin me-2"></i>Rayon de 30 km autour d’Hauterives<br/><span </p>
+            <div id="map"></div>
+            <!-- Paragraphe SEO local -->
+            <div class="service-card p-4 mt-4">
+              <p class="opacity-75 mb-0"><strong>Hauterives Connect</strong> intervient pour la réparation de smartphones à <strong>Hauterives</strong> et dans toute la <strong>Drôme des Collines</strong> : Châteauneuf‑de‑Galaure, Anneyron, Saint‑Sorlin‑en‑Valloire, Épinouze, Roybon… Remplacement d’écran, batterie, connecteur, vitre arrière : appelez‑moi au <a href="tel:+33649578017" class="text-light">06 49 57 80 17</a> pour un diagnostic rapide.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h2 class="display-6 fw-bold mb-4">Contact Rapide</h2>
+            <div class="contact-options">
+              <div class="contact-option"><i class="fas fa-phone fs-2 mb-3"></i><h3 class="h5">Appelez‑nous</h3><p><a href="tel:+33649578017" class="text-light">06 49 57 80 17</a></p></div>
+              <div class="contact-option"><i class="fas fa-envelope fs-2 mb-3"></i><h3 class="h5">Envoyez un email</h3><p><a href="mailto:contact@hauterives-connect.fr" class="text-light">contact@hauterives-connect.fr</a></p></div>
+              <div class="contact-option"><i class="fas fa-map-marker-alt fs-2 mb-3"></i><h3 class="h5">Atelier Mobile</h3><p>Hauterives et 30 km alentours</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-top border-secondary mt-5">
+    <div class="container py-4">
+      <div class="row g-4 text-center">
+        <div class="col-md-4"><h4 class="h5">Horaires</h4><ul class="list-unstyled opacity-75"><li>Lun‑Sam : 9h‑19h</li><li>Urgences : 7j/7</li></ul></div>
+        <div class="col-md-4"><h4 class="h5">Légal</h4><ul class="list-unstyled opacity-75"><li><a href="mentions.html" class="text-decoration-none">Mentions légales</a></li><li><a href="#" class="text-decoration-none">CGV</a></li></ul></div>
+        <div class="col-md-4"><h4 class="h5">Contact</h4><p class="opacity-75 mb-0"><i class="fas fa-phone me-2"></i>06 49 57 80 17<br/><i class="fas fa-envelope me-2"></i>contact@hauterives-connect.fr</p></div>
+      </div>
+      <hr class="my-4 opacity-25"/>
+      <p class="text-center mb-0 small opacity-75">© 2025 Hauterives Connect – Réparation Apple & Android<br/>N° SIRET : 935 170 035 00015</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      /* --- Leaflet map --- */
+      const hauterives=[45.2542,5.0264];
+      const map=L.map("map").setView(hauterives,11);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap contributors"}).addTo(map);
+      L.marker(hauterives).addTo(map).bindPopup("Hauterives");
+      L.circle(hauterives,{color:"#2563EB",fillColor:"#2563EB",fillOpacity:.1,radius:30000}).addTo(map);
+
+     
+    });
+  </script>
+</body>
+</html>
