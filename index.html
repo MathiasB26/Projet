@@ -1,13 +1,485 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" dir="ltr">
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <!-- Icône du site (favicon) -->
+    <link rel="icon" type="image/png" href="icone.png" />
+    <title>informaticien à Hauterives | Hauterives Connect</title>
+	<meta name="google-site-verification" content="u5YSc7GcNkKfgt7hB3rrsD0Fiy3fZTCMpI7FOmcTyLI" />
+    <meta name="description" content="Hauterives Connect propose des services de réparation d'ordinateurs et Assistance informatique, depannage informatique , installation windows 11 , Amélioration des performances , Récupération données , vente ordinateur , reparation ordinateur , reparation ordinateur portable ">
+    <meta name="keywords" content="réparation ordinateur , réparation iPhone, réparation Android, Hauterives, dépannage informatique, Hauterives Connect">
+    <meta name="author" content="Hauterives Connect">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* Styles identiques à la page mobile */
+        :root {
+            --primary: #2563EB; /* Bleu Apple */
+            --secondary: #34C759; /* Vert Android */
+            --dark: #0F172A;    /* Fond sombre */
+            --light: #F8FAFC;   /* Texte clair */
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(-45deg, 
+                #0F172A, 
+                #1E293B, 
+                #0F172A, 
+                #1E293B);
+            background-size: 400% 400%;
+            animation: gradientFlow 20s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.15);
+        }
+
+        .price-tag {
+            background: var(--primary);
+            color: var(--light);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        #map {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-access a {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .quick-access a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .contact-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .contact-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .contact-option:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .service-image {
+            border-radius: 15px;
+            overflow: hidden;
+            margin-left: 2rem;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<div class="animated-bg"></div>
 
-</body>
-</html>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(15, 23, 42, 0.95);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">
+            <i class="fas fa-laptop-code me-2"></i> hauterives connect
+        </a>
+    </div>
+</nav>
 
+<!-- Hero Section -->
+<section class="min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <span class="badge bg-primary mb-3">Expert Informatique</span>
+                <h1 class="display-3 fw-bold mb-4">
+                    Services Informatiques<br>
+                    <span class="text-primary">Hauterives</span> & 
+                    <span class="text-secondary">Alentours</span>
+                </h1>
+                <p class="lead mb-5 opacity-75">
+                    Dépannage informatique, installation, reparation ordinateur/télephone, optimisation de vos systèmes informatiques,recupération de données, vente d'ordinateur/smartphone.. <br>
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="tel:+33649578017" class="btn btn-primary btn-lg px-4 py-3">
+                        <i class="fas fa-phone me-2"></i>06 49 57 80 17
+                    </a>
+                    <a href="#contact" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-map-marked-alt me-2"></i>Zone d'intervention
+                    </a>
+                    <a href="phone" class="btn btn-secondary btn-lg px-4 py-3">
+                        <i class="fas fa-mobile-alt me-2"></i>Réparation Smartphone
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block">
+                <img src="https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=1200" 
+                     alt="Services informatiques à Hauterives" 
+                     class="service-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- À propos -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="service-card p-4 p-lg-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="display-6 fw-bold mb-4">À propos de moi</h2>
+                    <p class="opacity-75 mb-4">
+                        Je suis <strong>Mathias Brunet</strong>, informaticien auto-entrepreneur basé à Hauterives, dans la Drôme. Passionné par les nouvelles technologies, j'offre des services complets pour répondre à tous vos besoins informatiques.
+                    </p>
+                    <p class="opacity-75 mb-4">
+                        Mon expertise couvre la réparation d'ordinateurs et de téléphones, la gestion de réseaux informatiques, la vente de matériel informatique, ainsi que des formations adaptées à tous les niveaux. Mon objectif est de vous offrir des solutions <strong>rapides, efficaces et accessibles</strong>, avec un service de proximité, et un suivi personnalisé.
+                    </p>
+                    <p class="opacity-75 mb-4">
+                        J'interviens principalement dans un rayon de <strong>30 km autour de Hauterives</strong>, incluant des villes comme Châteauneuf-de-Galaure, Anneyron, Bougé-Chambalud, Saint-Uze, Peyrin et d'autres villes voisines. 
+                    </p>
+                    <p class="opacity-75 mb-4">
+                        Que ce soit à domicile ou à distance, je suis disponible pour vous accompagner dans toutes vos démarches informatiques et vous former aux outils numériques du quotidien.
+                    </p>
+                    <a href="#contact" class="btn btn-primary btn-lg px-4 py-3">
+                        <i class="fas fa-envelope me-2"></i>Contactez-moi
+                    </a>
+                    <a href="phone" class="btn btn-secondary btn-lg px-4 py-3">
+                        <i class="fas fa-mobile-alt me-2"></i>Réparation Télephone
+                    </a>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block">
+                    <img src="IMG_1344.jpg" 
+                         alt="Mathias Brunet - Informaticien à Hauterives" 
+                         class="service-image">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-5">
+    <div class="container">
+        <h2 class="text-center display-4 fw-bold mb-5">Nos Services</h2>
+        
+        <!-- Accès rapide aux catégories -->
+        <div class="quick-access mb-5">
+            <a href="#depannage">
+                <i class="fa fa-desktop fs-2 mb-2"></i><br>
+                Dépannage
+            </a>
+			
+			<a href="#Réparation">
+                <i class="fa fa-wrench fs-2 mb-2 "></i><br>
+                Réparation
+            </a>
+            <a href="#installation">
+                <i class="fas fa-cogs fs-2 mb-2"></i><br>
+                Installation
+            </a>
+            <a href="#optimisation">
+                <i class="fas fa-rocket fs-2 mb-2"></i><br>
+                Optimisation
+            </a>
+            <a href="#Récupération de données">
+                <i class="fa fa-database fs-2 mb-2"></i><br>
+                Récupération de données
+
+
+            </a>
+			<a href="#Récupération de données">
+                <i class="fa fa-shopping-cart fs-2 mb-2 "></i><br>
+                Vente
+            </a>
+        </div>
+
+        <!-- Dépannage -->
+        <div id="depannage" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Dépannage à domicile</h3>
+            <ul class="opacity-75 mb-4">
+                <li>✓ Diagnostic et résolution de problèmes</li>
+                <li>✓ Assistance logicielle et matérielle</li>
+                <li>✓ Intervention rapide</li>
+            </ul>
+            <div class="price-tag">60€/heure</div>
+        </div>
+		        <!-- Réparation -->
+
+		 <div id="Réparation" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Réparation</h3>
+            <ul class="opacity-75 mb-4">
+               <li>✓ Diagnostic complet et rapide</li>
+            <li>✓ Réparation d'ordinateurs et de smartphones</li>
+            <li>✓ Intervention sur composants défectueux</li>
+            </ul>
+            <div class="price-tag">Sur Devis</div>
+        </div>
+
+        <!-- Installation -->
+        <div id="installation" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Installation de matériel</h3>
+            <ul class="opacity-75 mb-4">
+                <li>✓ Ordinateurs, imprimantes, périphériques</li>
+                <li>✓ Configuration réseau</li>
+                <li>✓ Installation de logiciels</li>
+            </ul>
+            <div class="price-tag">60€/heure</div>
+        </div>
+
+        <!-- Optimisation -->
+        <div id="optimisation" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Optimisation système</h3>
+            <ul class="opacity-75 mb-4">
+                <li>✓ Suppression de virus et malware</li>
+                <li>✓ Nettoyage et maintenance</li>
+                <li>✓ Amélioration des performances</li>
+            </ul>
+            <div class="price-tag">35€</div>
+        </div>
+
+        <!-- Récupération de données -->
+        <div id="Récupération de données" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Récupération de données</h3>
+            <ul class="opacity-75 mb-4">
+                <li>✓ Disques durs, clés USB, SSD</li>
+                <li>✓ Données supprimées ou corrompues</li>
+                <li>✓ Sauvegarde sécurisée</li>
+            </ul>
+            <div class="price-tag">À partir de 70€</div>
+			
+        </div>
+		<!-- Récupération de données -->
+        <div id="vente" class="service-card h-100 p-4 mb-4">
+            <h3 class="h4 mb-3">Vente</h3>
+            <ul class="opacity-75 mb-4">
+                <li>✓ Ordinateur Neuf / Reconditionné</li>
+                <li>✓ Télephone Neuf / Reconditionné</li>
+                <li>✓ Tablette Neuf / Reconditionné</li>
+				<li>✓ Imprimante, cartouche d'encre </li>
+				<li>✓ Cable, adaptateur... </li>
+				<li>✓ Serveur </li>
+            </ul>
+            <div class="price-tag">Sur Devis</div>
+        </div>
+    
+				
+            
+        </div>
+  
+
+<!-- Contact -->
+<section id="contact" class="py-5">
+    <div class="container">
+        <div class="service-card p-4 p-lg-5">
+            <div class="row g-5">
+                <div class="col-md-6">
+                    <h2 class="display-6 fw-bold mb-4">Zone d'Intervention</h2>
+                    <div class="opacity-75 mb-4">
+                        <p>
+                            <i class="fas fa-map-pin me-2"></i>
+                            Rayon de 30km autour d'Hauterives<br>
+                        </p>
+                        <p class="mt-3">
+    <strong>Villes comprises :</strong><br>
+    <a href="/index" class="text-primary">Hauterives</a>, 
+    <a href="/index" class="text-primary">Châteauneuf-de-Galaure</a>, 
+    <a href="/index" class="text-primary">Saint-Martin-d'Août</a>, 
+    <a href="/index" class="text-primary">Saint-Christophe-et-le-Laris</a>, 
+    <a href="/index" class="text-primary">Montchenu</a>, 
+    <a href="/index" class="text-primary">Saint-Avit</a>, 
+    <a href="/index" class="text-primary">Le Grand-Serre</a>, 
+    <a href="/index" class="text-primary">Lens-Lestang</a>, 
+    <a href="/index" class="text-primary">Tersanne</a>, 
+    <a href="/index" class="text-primary">Saint-Sorlin-en-Valloire</a>, 
+    <a href="/index" class="text-primary">Manthes</a>, 
+    <a href="/index" class="text-primary">Moras-en-Valloire</a>, 
+    <a href="/index" class="text-primary">La Motte-de-Galaure</a>, 
+    <a href="/index" class="text-primary">Ratières</a>, 
+    <a href="/index" class="text-primary">Claveyson</a>, 
+    <a href="/index" class="text-primary">Marsaz</a>, 
+    <a href="/index" class="text-primary">Bren</a>, 
+    <a href="/index" class="text-primary">Albon</a>, 
+    <a href="/index" class="text-primary">Beaurepaire</a>, 
+    <a href="/index" class="text-primary">Lapeyrouse-Mornay</a>, 
+    <a href="/index" class="text-primary">Marcollin</a>, 
+    <a href="/index" class="text-primary">Pact</a>, 
+    <a href="/index" class="text-primary">Jarcieu</a>, 
+    <a href="/index" class="text-primary">Anjou</a>, 
+    <a href="/index" class="text-primary">Saint-Barthélemy-de-Beaurepaire</a>, 
+    <a href="/index" class="text-primary">Thodure</a>, 
+    <a href="/index" class="text-primary">Viriville</a>, 
+    <a href="/index" class="text-primary">Roybon</a>, 
+    <a href="/index" class="text-primary">Saint-Clair-sur-Galaure</a>, 
+    <a href="/index" class="text-primary">Marcilloles</a>, 
+    <a href="/index" class="text-primary">Anneyron</a>,
+	<a href="/index" class="text-primary">fay-le-clos</a>,
+	<a href="/index" class="text-primary">st uze</a>,
+	<a href="/index" class="text-primary">Saint Barthélemy de Vals</a>,
+	<a href="/index" class="text-primary">Mureils</a>,
+	<a href="/index" class="text-primary">Bathernay</a>,
+	<a href="/index" class="text-primary">Saint Christophe et le Laris</a>,
+	<a href="/index" class="text-primary">Crepol</a>,
+	<a href="/index" class="text-primary">Montmiral</a>,			
+	<a href="/index" class="text-primary">Saint Donat sur l'Herbasse</a>,		
+	<a href="/index" class="text-primary">Clérieux</a>,
+	<a> et d'autre ... </a>
+</p>
+
+                    </div>
+                    <div id="map"></div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h2 class="display-6 fw-bold mb-4">Contact Rapide</h2>
+                    <div class="contact-options">
+                        <div class="contact-option">
+                            <i class="fas fa-phone fs-2 mb-3"></i>
+                            <h3 class="h5">Appelez-nous</h3>
+                            <p>
+                                <a href="tel:+33649578017" class="text-light">06 49 57 80 17</a>
+                            </p>
+                        </div>
+                        <div class="contact-option">
+                            <i class="fas fa-envelope fs-2 mb-3"></i>
+                            <h3 class="h5">Envoyez un email</h3>
+                            <p>
+                                <a href="mailto:contact@hauterives-connect.fr" class="text-light">contact@hauterives-connect.fr</a>
+                            </p>
+                        </div>
+                        <div class="contact-option">
+                            <i class="fas fa-map-marker-alt fs-2 mb-3"></i>
+                            <h3 class="h5">Atelier Mobile</h3>
+                            <p>Hauterives et 30km alentours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-top border-secondary mt-5">
+    <div class="container py-4">
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <h4 class="h5">Horaires</h4>
+                <ul class="list-unstyled opacity-75">
+                    <li>Lun-Sam : 9h-19h</li>
+                    <li>Urgences : 7j/7</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4 class="h5">Légal</h4>
+                <ul class="list-unstyled opacity-75">
+                    <li><a href="#" class="text-decoration-none">Mentions légales</a></li>
+					<li><a href="rustdesk-1.3.2-x86_64.exe" class="text-decoration-none">Accès à distance</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4 class="h5">Contact</h4>
+                <div class="opacity-75">
+                    <p>
+                        <i class="fas fa-phone me-2"></i>06 49 57 80 17<br>
+                        <i class="fas fa-envelope me-2"></i>contact@hauterives-connect.fr
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 opacity-25">
+        <p class="text-center mb-0 small opacity-75">
+            &copy; 2025 Hauterives connect - Services Informatiques | Réparation Télephone Iphone et Android <br>
+            N° SIRET : 93517003500015
+        </p>
+    </div>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Coordonnées GPS d'Hauterives
+    const hauterivesCoords = [45.2542, 5.0264];
+
+    // Initialisation de la carte
+    const map = L.map('map').setView(hauterivesCoords, 11);
+
+    // Ajout des tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ajout d'un marqueur pour Hauterives
+    L.marker(hauterivesCoords)
+        .addTo(map)
+        .bindPopup('Hauterives')
+        .openPopup();
+
+    // Ajout d'un cercle de 30 km
+    L.circle(hauterivesCoords, {
+        color: '#2563EB',
+        fillColor: '#2563EB',
+        fillOpacity: 0.1,
+        radius: 30000 // 30 km en mètres
+    }).addTo(map);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
